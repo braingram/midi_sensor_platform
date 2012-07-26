@@ -86,8 +86,9 @@ byte lookupID(int IDValue) {
   }
 }
 
-#define ID_THRESHOLD 10 // TODO: make this 4?
+#define ID_THRESHOLD 4 // TODO: make this 4?
 #define ID_CC        83
+#define SETTLING_TIME 10
 
 class VernierSensor {
   public:
@@ -133,6 +134,9 @@ void VernierSensor::setThreshold(int threshold) {
 
 void VernierSensor::enable(){
   _enabled = true;
+  for (int i = 0; i < SETTLING_TIME; i++) {
+    analogRead(_sensorPin);
+  }
   // TODO: settling time
   _previousValue = -(_threshold + 1);// make sure next reading is sent
 }
